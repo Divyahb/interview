@@ -3,23 +3,43 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AWS Developer 30-Day Checklist with Links</title>
+  <title>AWS Developer 30-Day Checklist</title>
   <style>
     body { font-family: sans-serif; background: #f9f9f9; padding: 20px; }
-    h1 { color: #2e6bde; }
-    .week { background: #fff; padding: 15px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    h1, h2 { color: #2e6bde; }
+    .week, .resources { background: #fff; padding: 15px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     label { display: block; margin: 5px 0; }
     input[type="checkbox"] { margin-right: 10px; }
     a { color: #007acc; text-decoration: none; font-size: 14px; }
-    h2 { color: #444; margin-top: 0; }
+    #progress-container { margin-bottom: 20px; }
+    #progress-bar { height: 20px; background: #2e6bde; width: 0%; border-radius: 5px; transition: width 0.3s ease-in-out; }
+    #progress-wrapper { background: #ddd; border-radius: 5px; width: 100%; }
+    #progress-text { margin-top: 5px; font-weight: bold; }
   </style>
 </head>
 <body>
 
-  <h1>✅ AWS Developer Certification — 30-Day Checklist with Course Links</h1>
-  <p>Progress stored locally for offline tracking. Each task links to a curated training resource.</p>
+  <h1>🚀 AWS Developer Certification — 30-Day Checklist</h1>
+  <div id="progress-container">
+    <div id="progress-wrapper"><div id="progress-bar"></div></div>
+    <div id="progress-text">Progress: 0%</div>
+  </div>
 
   <div id="checklist"></div>
+
+  <div class="resources">
+    <h2>📚 Consolidated Resource Library</h2>
+    <ul>
+      <li><a href="https://aws.amazon.com/training/">AWS Skill Builder (Official)</a></li>
+      <li><a href="https://digitalcloud.training/free-aws-practice-exam-questions/">Free Practice Questions</a></li>
+      <li><a href="https://quizlet.com/392359849/aws-cloud-practitioner-exam-questions-flash-cards/">Quizlet Flashcards</a></li>
+      <li><a href="https://aws.amazon.com/developer/tools/">AWS Developer Tools</a></li>
+      <li><a href="https://aws.amazon.com/certification/certification-prep/">Certification Prep Hub</a></li>
+      <li><a href="https://aws.amazon.com/cognito/">Cognito Auth Docs</a></li>
+      <li><a href="https://aws.amazon.com/secrets-manager/">Secrets Manager Docs</a></li>
+      <li><a href="https://www.credly.com/">Credly Badge Integration</a></li>
+    </ul>
+  </div>
 
   <script>
     const checklistData = {
@@ -59,6 +79,16 @@
     };
 
     const checklistContainer = document.getElementById("checklist");
+    const progressBar = document.getElementById("progress-bar");
+    const progressText = document.getElementById("progress-text");
+
+    function updateProgress() {
+      const allBoxes = document.querySelectorAll("input[type='checkbox']");
+      const checked = Array.from(allBoxes).filter(cb => cb.checked).length;
+      const percent = Math.round((checked / allBoxes.length) * 100);
+      progressBar.style.width = percent + "%";
+      progressText.textContent = `Progress: ${percent}%`;
+    }
 
     Object.entries(checklistData).forEach(([weekTitle, tasks]) => {
       const weekDiv = document.createElement("div");
@@ -75,6 +105,7 @@
         checkbox.checked = localStorage.getItem(key) === "true";
         checkbox.addEventListener("change", () => {
           localStorage.setItem(key, checkbox.checked);
+          updateProgress();
         });
         label.appendChild(checkbox);
 
@@ -89,6 +120,8 @@
 
       checklistContainer.appendChild(weekDiv);
     });
+
+    updateProgress();
   </script>
 
 </body>
