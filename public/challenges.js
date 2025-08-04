@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
         });
-        
+
         // Add this after DOMContentLoaded and after rendering challenges
         document.getElementById('title-search').addEventListener('input', function () {
             const searchValue = this.value.trim().toLowerCase();
@@ -150,6 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (progressBar) {
             progressBar.style.width = `${percent}%`;
         }
+        localStorage.setItem('coding-overall-percent', percent);
         // Update progress text
         const progressText = document.querySelector('.mt-2 span:first-child');
         const progressCount = document.querySelector('.mt-2 span:last-child');

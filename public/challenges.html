@@ -29,6 +29,7 @@
             }
         }
     </script>
+    <link rel="stylesheet" href="style.css" />
     <style>
         .challenge-card {
             transition: all 0.3s ease;
@@ -165,6 +166,17 @@
 </head>
 
 <body class="bg-gray-50 min-h-screen dark:bg-gray-900 transition-colors duration-200">
+    <aside id="sidebar">
+    <h2><a href="index.html">🏠 Home</a></h2>
+        <h2>🗂️ Focus Areas</h2>
+        <ul style="list-style:none; padding:0;">
+            <li><a href="aws.html">AWS Certification</a></li>
+            <li><a href="challenges.html">Coding & System Design</a></li>
+            <li><a href="branding.html">Resume + GitHub</a></li>
+            <li><a href="german.html"><strong>German Language</strong></a></li>
+        </ul>
+  </aside>
+  <main>
     <div class="container mx-auto px-12 py-8">
         <!-- Header with theme toggle -->
         <header class="mb-8">
@@ -205,8 +217,8 @@
                 <div class="progress-bar bg-blue-600 dark:bg-blue-500 rounded-full h-2.5" style="width: 12%"></div>
             </div>
             <div class="mt-2 text-sm text-gray-600 dark:text-gray-400 flex justify-between">
-                <span>12% completed</span>
-                <span>12/100 challenges solved</span>
+                <span></span>
+                <span></span>
             </div>
 
             <button id="view-bookmarked"
@@ -299,7 +311,7 @@
             </div>
         </div>
     </div>
-
+</main>
     <script src="challenges.js"></script>
 </body>
 

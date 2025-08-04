@@ -42,7 +42,7 @@ function updateTopInfo() {
     germanOverallPercent,
     dashboardOverallPercent
   ];
-  const overallPercent = ((overallProgress.reduce((a, b) => a + b, 0) / 5) || 0);
+  const overallPercent = ((overallProgress.reduce((a, b) => a + b, 0) / 4) || 0);
   document.getElementById("overall-progress").textContent = overallPercent;
 }
 
