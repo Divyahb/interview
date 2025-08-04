@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>📘 Divya’s Productivity Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="scripts.js"></script>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside id="sidebar">
+        <h2>🗂️ Focus Areas</h2>
+        <ul>
+            <li><a href="aws.html">AWS Certification</a></li>
+            <li><a href="challenges.html">Coding & System Design</a></li>
+            <li><a href="branding.html">Resume + GitHub</a></li>
+            <li><a href="german.html">German Language</a></li>
+            <li><a href="dashboard.html">Tracker & Planner</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main>
+        <h1>📊 Planner Hub</h1>
+        <p>Divya's journey to success!</p>
+        <div class="top-info">
+            <p>📅 Today: <span id="today-date"></span></p>
+            <p>⏱️ Day <span id="day-number"></span> of 60</p>
+            <p>🚀 Overall Interview Prep Progress: <span id="overall-progress"></span>%</p>
+        </div>
+
+        <!-- Deadline Cards -->
+        <div class="card-row">
+            <div class="card" id="aws-deadline">
+                <h3>AWS Certification</h3>
+                <p>🗓️ Deadline: Sep 5<br>⏳ <span class="days-left" data-date="2025-09-05"></span> days remaining</p>
+                <div class="progress-bar" id="aws-progress"></div>
+            </div>
+            <div class="card" id="coding-deadline">
+                <h3>Coding + System Design</h3>
+                <p>🗓️ Deadline: Sep 25<br>⏳ <span class="days-left" data-date="2025-09-25"></span> days remaining</p>
+                <div class="progress-bar" id="coding-progress"></div>
+            </div>
+            <div class="card" id="branding-deadline">
+                <h3>Resume + GitHub</h3>
+                <p>🗓️ Deadline: Sep 25<br>⏳ <span class="days-left" data-date="2025-09-25"></span> days remaining</p>
+                <div class="progress-bar" id="branding-progress"></div>
+            </div>
+            <div class="card" id="german-deadline">
+                <h3>German Language</h3>
+                <p>🗓️ Deadline: Sep 25<br>⏳ <span class="days-left" data-date="2025-09-25"></span> days remaining</p>
+                <div class="progress-bar" id="german-progress"></div>
+            </div>
+            <div class="card" id="dashboard-deadline">
+                <h3>Github Profile</h3>
+                <p>🗓️ Deadline: Sep 25<br>⏳ <span class="days-left" data-date="2025-09-25"></span> days remaining</p>
+                <div class="progress-bar" id="dashboard-progress"></div>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
