@@ -2,7 +2,7 @@ const awsOverallPercent = Number(localStorage.getItem("aws-overall-percent") || 
 const codingOverallPercent = Number(localStorage.getItem("coding-overall-percent") || 0);
 const brandingOverallPercent = Number(localStorage.getItem("branding-overall-percent") || 0);
 const germanOverallPercent = Number(localStorage.getItem("german-overall-percent") || 0);
-const dashboardOverallPercent = Number(localStorage.getItem("dashboard-overall-percent") || 0);
+const systemDesignOverallPercent = Number(localStorage.getItem("system-design-overall-percent") || 0);
 
 function updateCountdowns() {
   const elements = document.querySelectorAll(".days-left");
@@ -40,9 +40,9 @@ function updateTopInfo() {
     codingOverallPercent,
     brandingOverallPercent,    
     germanOverallPercent,
-    dashboardOverallPercent
+    systemDesignOverallPercent
   ];
-  const overallPercent = ((overallProgress.reduce((a, b) => a + b, 0) / 4) || 0);
+  const overallPercent = ((overallProgress.reduce((a, b) => a + b, 0) / 5) || 0);
   document.getElementById("overall-progress").textContent = overallPercent;
 }
 
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
   updateProgress("coding", codingOverallPercent);
   updateProgress("branding", brandingOverallPercent);
   updateProgress("german", germanOverallPercent);
-  updateProgress("dashboard", dashboardOverallPercent);
+  updateProgress("system-design", systemDesignOverallPercent);
   updateTopInfo(); 
 });
 
