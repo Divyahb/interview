@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Load challenges from output.html
-    fetch('/output.html')
+    fetch('./output.html')
         .then(res => res.text())
         .then(html => {
             document.getElementById('challenges-container').innerHTML = html;
