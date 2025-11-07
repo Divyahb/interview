@@ -1,0 +1,255 @@
+/* Base Layout */
+body {
+  margin: 0;
+  display: flex;
+  font-family: "Segoe UI", "Roboto", Arial, sans-serif;
+  background: #f5f5f5;
+  color: #333;
+}
+
+main {
+  flex: 1;
+  padding: 2rem;
+}
+
+@media (max-width: 900px) {
+  aside#sidebar {
+    position: static;
+    width: 100%;
+    min-height: auto;
+    border-right: none;
+  }
+  main {
+    margin-left: 0;
+  }
+}
+
+/* Sidebar */
+aside#sidebar {
+  width: 280px;
+  background: #fff;
+  padding: 2rem 1rem;
+  border-right: 1px solid #e5e7eb;
+  min-height: 100vh;
+  box-shadow: 1px 0 5px rgba(0, 0, 0, 0.05);
+}
+
+aside#sidebar nav a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  color: #2563eb;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+aside#sidebar nav a:hover {
+  background: #f3f4f6;
+  color: #1e40af;
+}
+
+/* Headings */
+h1 {
+  font-size: 2.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #2563eb;
+}
+
+.dashboard-desc {
+  color: #374151;
+  margin-bottom: 1.5rem;
+}
+
+/* Top Info */
+.top-info {
+  background: #f3f4f6;
+  border-radius: 1rem;
+  padding: 1rem 2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  font-size: 1.1rem;
+}
+
+/* Cards */
+.card-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.card {
+  background: #fff;
+  border-radius: 1rem;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  transition: box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.15);
+}
+
+/* Checklist */
+.checklist-section {
+  margin-bottom: 2rem;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.checklist-item label {
+  margin-left: 0.5rem;
+  cursor: pointer;
+}
+
+.checklist-item input:checked + label {
+  text-decoration: line-through;
+  color: #9ca3af;
+}
+
+/* Progress Bars */
+.progress-bar-bg {
+  background: #e5e7eb;
+  border-radius: 9999px;
+  height: 1rem;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, #2563eb 60%, #60a5fa 100%);
+  border-radius: 9999px;
+  height: 1rem;
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+/* Resources */
+.resource-links a {
+  margin-right: 1rem;
+  color: #2563eb;
+  text-decoration: none;
+}
+
+/* Challenges */
+.challenge-card {
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+}
+
+.challenge-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border-left-color: #0ea5e9;
+}
+
+.solution-toggle {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.solution-toggle.active {
+  max-height: 2000px;
+}
+
+/* Difficulty Tags */
+.difficulty-easy {
+  background-color: #ecfdf5;
+  color: #059669;
+}
+
+.difficulty-medium {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.difficulty-hard {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.tag {
+  transition: all 0.2s ease;
+}
+
+.tag:hover {
+  transform: translateY(-1px);
+}
+
+/* Scrollbars */
+.sidebar {
+  scrollbar-width: thin;
+  scrollbar-color: #e5e7eb #f3f4f6;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: #f3f4f6;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: #e5e7eb;
+  border-radius: 6px;
+}
+
+/* Dark Mode */
+.dark .progress-bar-bg {
+  background: #374151;
+}
+
+.dark .progress-bar {
+  background: #60a5fa;
+}
+
+.dark .sidebar::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+.dark .sidebar::-webkit-scrollbar-thumb {
+  background-color: #4b5563;
+}
+
+.dark .challenge-card {
+  background-color: #1f2937;
+  border-color: #374151;
+}
+
+.dark .challenge-card:hover {
+  border-left-color: #0ea5e9;
+}
+
+.dark .solution-content {
+  background-color: #111827;
+}
+
+.dark .checklist-container {
+  background-color: #1f2937;
+  border-color: #374151;
+}
+
+.dark .checklist-item label {
+  color: #e5e7eb;
+}
+
+.dark .checklist-item input:checked + label {
+  color: #9ca3af;
+}
+
+.dark .checkmark {
+  border-color: #4b5563;
+}

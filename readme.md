@@ -1,65 +1,73 @@
-# Interview Prep Dashboard
+# 📊 Planner Hub Dashboard
 
-Welcome to Divya's Productivity Dashboard!  
-This project is a personal planner and tracker for interview preparation, coding challenges, system design, branding, and German language learning.
-
-## Features
-
-- **Sidebar Navigation:** Quickly access all focus areas.
-- **Progress Tracking:** Visual progress bars for each section and overall progress.
-- **Coding Challenges:** Search, filter, bookmark, and mark challenges as complete.
-- **System Design:** Top 30 system design problems with resources and progress tracking.
-- **Branding:** Actionable checklist for LinkedIn and GitHub profile improvement.
-- **German Language:** Structured study plan with lesson links and mock test resources.
-- **Responsive Design:** Works well on desktop and mobile.
-
-## Getting Started
-
-1. **Clone the repository:**
-   ```sh
-   git clone https://github.com/yourusername/interview-dashboard.git
-   ```
-2. **Open the `public/index.html` file in your browser.**
-3. **Progress is saved automatically in your browser's local storage.**
-
-## Folder Structure
-
-```
-public/
-  ├── index.html
-  ├── challenges.html
-  ├── branding.html
-  ├── german.html
-  ├── system_design.html
-  ├── style.css
-  ├── challenges.js
-  ├── output.html
-```
-
-## Technologies Used
-
-- HTML5, CSS3 (Tailwind + custom styles)
-- JavaScript (Vanilla)
-- Font Awesome & Material Icons
-
-## Customization
-
-- **Add new challenges:** Update `output.html` for coding problems.
-- **Update checklists:** Edit the checklist data in each section's JS.
-- **Change deadlines:** Edit the date in each card in `index.html`.
-
-## Credits & Resources
-
-- [System Design Primer](https://github.com/donnemartin/system-design-primer)
-- [Grokking the System Design Interview](https://www.educative.io/courses/grokking-the-system-design-interview)
-- [DW Learn German](https://learngerman.dw.com/en/overview)
-- [Font Awesome](https://fontawesome.com/)
-- [Tailwind CSS](https://tailwindcss.com/)
-
-## License
-
-MIT License
+A modular, responsive productivity dashboard built with **native JavaScript**, **HTML**, and **Tailwind CSS**. It tracks progress across multiple focus areas like AWS Certification, Coding, Resume Branding, German Language, and System Design — all powered by dynamic JSON-driven configuration.
 
 ---
 
-**Happy prepping and good luck with your interviews!**
+## 🚀 Features
+
+- ✅ Fragment-based routing using hash navigation (`#route`)
+- ✅ Dynamic progress tracking via `localStorage`
+- ✅ Centralized timeline management via `timeline.js`
+- ✅ Responsive layout with Tailwind utility classes
+- ✅ No frameworks or bundlers — pure HTML + JS
+- ✅ Fully customizable via JSON — no hardcoded dates or values
+
+---
+
+## 🧠 How It Works
+
+- **Routing**: Each sidebar link uses a `data-fragment` attribute. Clicking loads the corresponding HTML fragment and its script dynamically.
+- **Progress**: Each module stores its progress percentage in `localStorage`, visualized via animated progress bars.
+- **Timeline**: All deadlines, start dates, and end dates are defined in `scripts/timeline.js` and accessed globally via `window.TIMELINE`.
+- **Customization**: Nothing is hardcoded — developers can modify `timeline.js` or other JSON-like structures to adapt the dashboard to any set of goals, timelines, or modules.
+
+## 🛠️ How to Run Locally
+
+1. **Install dependencies**:
+
+   ```bash
+   npm install
+   ```
+
+2. **Start the development server**:
+   ```bash
+   npm run start
+   ```
+3. **Open the dashboard in your browser**:
+   Navigate to `http://localhost:3000` in your web browser.
+
+The app is served using Express and runs on port 3000 by default.
+
+## 📦 Requirements
+
+- Node.js (v16 or higher recommended)
+- Modern browser (Chrome, Firefox, Edge)
+- JavaScript enabled
+- No build tools or bundlers required
+
+---
+
+## 🧩 Customization
+
+- All dates, deadlines, and progress logic are driven by `scripts/timeline.js`
+- Developers can freely modify the structure to:
+  - Change start and end dates
+  - Add or remove modules
+  - Rename sections or update deadlines
+- Nothing is hardcoded — the dashboard adapts entirely from the JSON structure
+
+---
+
+## 🧼 Notes
+
+- No dark mode components are included by default
+- Tailwind CSS is loaded via CDN for styling
+- All logic is written in **vanilla JavaScript** — no frameworks or libraries
+
+---
+
+## 📄 License
+
+- MIT License
+- Free to use, modify, and distribute for personal or commercial projects

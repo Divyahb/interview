@@ -1,221 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>📘 Divya’s Productivity Dashboard</title>
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css" />
-    <style>
-        body { font-family: 'Roboto', 'Segoe UI', Arial, sans-serif; }
-        .card-row { display: flex; flex-wrap: wrap; gap: 2rem; margin-top: 2rem; }
-        .card {
-            background: #fff;
-            border-radius: 1rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-            padding: 2rem 1.5rem;
-            min-width: 220px;
-            flex: 1 1 220px;
-            position: relative;
-            transition: box-shadow 0.2s;
-        }
-        .card:hover { box-shadow: 0 4px 16px rgba(37,99,235,0.15); }
-        .progress-bar-bg {
-            background: #e5e7eb;
-            border-radius: 9999px;
-            height: 0.75rem;
-            width: 100%;
-            margin-top: 0.5rem;
-        }
-        .progress-bar {
-            background: linear-gradient(90deg, #2563eb 60%, #60a5fa 100%);
-            border-radius: 9999px;
-            height: 0.75rem;
-            transition: width 0.3s;
-            width: 0%;
-        }
-        .top-info {
-            background: #f3f4f6;
-            border-radius: 1rem;
-            padding: 1rem 2rem;
-            margin-bottom: 2rem;
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-            font-size: 1.1rem;
-        }
-        aside#sidebar {
-            background: #fff;
-            border-right: 1px solid #e5e7eb;
-            min-height: 100vh;
-            padding: 2rem 1rem;
-            width: 220px;
-            position: fixed;
-            left: 0;
-            top: 0;
-        }
-        aside#sidebar h2 {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            font-weight: bold;
-        }
-        aside#sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
-        aside#sidebar ul li {
-            margin-bottom: 1rem;
-        }
-        aside#sidebar ul li a {
-            color: #2563eb;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-        aside#sidebar ul li a:hover {
-            color: #1e40af;
-            text-decoration: underline;
-        }
-        main {
-            margin-left: 240px;
-            padding: 2rem 0;
-        }
-        h1 {
-            font-size: 2.2rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            color: #2563eb;
-        }
-        .dashboard-desc {
-            color: #374151;
-            margin-bottom: 1.5rem;
-        }
-        @media (max-width: 900px) {
-            aside#sidebar { position: static; width: 100%; min-height: auto; border-right: none; }
-            main { margin-left: 0; }
-            .card-row { flex-direction: column; gap: 1.5rem; }
-        }
-    </style>
-</head>
-<body class="bg-gray-50 min-h-screen dark:bg-gray-900 transition-colors duration-200">
-    <!-- Sidebar -->
-    <aside id="sidebar">
-        <h2>🗂️ Focus Areas</h2>
-        <ul>
-            <li><a href="aws.html"><i class="fab fa-aws mr-2"></i>AWS Certification</a></li>
-            <li><a href="challenges.html"><i class="fas fa-code mr-2"></i>Coding</a></li>
-            <li><a href="branding.html"><i class="fas fa-id-badge mr-2"></i>Resume + GitHub</a></li>
-            <li><a href="german.html"><i class="fas fa-language mr-2"></i>German Language</a></li>
-            <li><a href="system_design.html"><i class="fas fa-network-wired mr-2"></i>System Design</a></li>
-        </ul>
+
+    <!-- Fonts & Icons -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="./styles/style.css" />
+
+    <!-- App Script -->
+    <script src="./scripts/timeline.js"></script>
+    <script src="./scripts/routes.js"></script>
+    <script src="./scripts/scripts.js" defer></script>
+  </head>
+  <body
+    class="bg-gray-50 min-h-screen dark:bg-gray-900 transition-colors duration-200 font-roboto"
+  >
+    <aside id="sidebar" class="w-64 bg-white border-r shadow-sm p-4">
+      <nav class="space-y-2 text-md font-medium text-gray-800" id="menu">
+        <!-- Home -->
+        <a
+          href="#dashboard"
+          data-fragment="dashboard"
+          class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-100 transition"
+        >
+          <i class="fas fa-home text-blue-600 text-base"></i>
+          <span>Home</span>
+        </a>
+
+        <!-- AWS -->
+        <a
+          href="#aws"
+          data-fragment="aws"
+          class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-100 transition"
+        >
+          <i class="fab fa-aws text-yellow-500 text-base"></i>
+          <span>AWS Certification</span>
+        </a>
+
+        <!-- Coding -->
+        <a
+          href="#challenges"
+          data-fragment="challenges"
+          class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-100 transition"
+        >
+          <i class="fas fa-code text-blue-500 text-base"></i>
+          <span>Coding</span>
+        </a>
+
+        <!-- Resume + GitHub -->
+        <a
+          href="#branding"
+          data-fragment="branding"
+          class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-100 transition"
+        >
+          <i class="fas fa-id-badge text-green-500 text-base"></i>
+          <span>Resume + GitHub</span>
+        </a>
+
+        <!-- German -->
+        <a
+          href="#german"
+          data-fragment="german"
+          class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-100 transition"
+        >
+          <i class="fas fa-language text-pink-500 text-base"> </i>
+          <span>German Language</span>
+        </a>
+
+        <!-- System Design -->
+        <a
+          href="#system_design"
+          data-fragment="system_design"
+          class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-100 transition"
+        >
+          <i class="fas fa-network-wired text-purple-500 text-base"></i>
+          <span>System Design</span>
+        </a>
+      </nav>
     </aside>
-
     <!-- Main Content -->
-    <main>
-        <h1>📊 Planner Hub</h1>
-        <p class="dashboard-desc">Divya's journey to success! Track your progress and deadlines for each focus area.</p>
-        <div class="top-info">
-            <p>📅 Today: <span id="today-date"></span></p>
-            <p>⏱️ Day <span id="day-number"></span> of 60</p>
-            <p>🚀 Overall Interview Prep Progress: <span id="overall-progress"></span>%</p>
-        </div>
-
-        <!-- Deadline Cards -->
-        <div class="card-row">
-            <div class="card" id="aws-deadline">
-                <h3><i class="fab fa-aws text-yellow-500 mr-2"></i>AWS Certification</h3>
-                <p>🗓️ Deadline: Sep 5<br>⏳ <span class="days-left" data-date="2025-09-05"></span> days remaining</p>
-                <div class="progress-bar-bg">
-                    <div class="progress-bar" id="aws-progress"></div>
-                </div>
-            </div>
-            <div class="card" id="coding-deadline">
-                <h3><i class="fas fa-code text-blue-500 mr-2"></i>Coding</h3>
-                <p>🗓️ Deadline: Sep 25<br>⏳ <span class="days-left" data-date="2025-09-25"></span> days remaining</p>
-                <div class="progress-bar-bg">
-                    <div class="progress-bar" id="coding-progress"></div>
-                </div>
-            </div>
-            <div class="card" id="branding-deadline">
-                <h3><i class="fas fa-id-badge text-green-500 mr-2"></i>Resume + GitHub</h3>
-                <p>🗓️ Deadline: Sep 25<br>⏳ <span class="days-left" data-date="2025-09-25"></span> days remaining</p>
-                <div class="progress-bar-bg">
-                    <div class="progress-bar" id="branding-progress"></div>
-                </div>
-            </div>
-            <div class="card" id="german-deadline">
-                <h3><i class="fas fa-language text-pink-500 mr-2"></i>German Language</h3>
-                <p>🗓️ Deadline: Sep 25<br>⏳ <span class="days-left" data-date="2025-09-25"></span> days remaining</p>
-                <div class="progress-bar-bg">
-                    <div class="progress-bar" id="german-progress"></div>
-                </div>
-            </div>
-            <div class="card" id="system-design-deadline">
-                <h3><i class="fas fa-network-wired text-purple-500 mr-2"></i>System Design</h3>
-                <p>🗓️ Deadline: Sep 25<br>⏳ <span class="days-left" data-date="2025-09-25"></span> days remaining</p>
-                <div class="progress-bar-bg">
-                    <div class="progress-bar" id="system-design-progress"></div>
-                </div>
-            </div>
-        </div>
-    </main>
-    <script>
-        // Utility: Format today's date
-        function formatDate(date) {
-            return date.toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' });
-        }
-        // Utility: Calculate days left
-        function daysLeft(targetDate) {
-            const today = new Date();
-            const end = new Date(targetDate);
-            const diff = Math.ceil((end - today) / (1000 * 60 * 60 * 24));
-            return diff >= 0 ? diff : 0;
-        }
-        // Utility: Calculate day number (assuming start date is Aug 5, 2025)
-        function getDayNumber() {
-            const start = new Date('2025-08-05');
-            const today = new Date();
-            return Math.min(60, Math.max(1, Math.ceil((today - start) / (1000 * 60 * 60 * 24)) + 1));
-        }
-
-        // Progress fetchers (from localStorage)
-        function getProgress(key, fallback) {
-            const val = localStorage.getItem(key);
-            return val !== null ? parseInt(val, 10) : fallback;
-        }
-
-        // Set up dashboard
-        document.addEventListener('DOMContentLoaded', function () {
-            // Date and day
-            document.getElementById('today-date').textContent = formatDate(new Date());
-            document.getElementById('day-number').textContent = getDayNumber();
-
-            // Days left for each card
-            document.querySelectorAll('.days-left').forEach(span => {
-                const date = span.getAttribute('data-date');
-                span.textContent = daysLeft(date);
-            });
-
-            // Progress bars
-            const awsPercent = getProgress('aws-overall-percent', 0);
-            const codingPercent = getProgress('coding-overall-percent', 0);
-            const brandingPercent = getProgress('branding-overall-percent', 0);
-            const germanPercent = getProgress('overall-german-percent', 0);
-            const systemDesignPercent = getProgress('system-design-overall-percent', 0);
-
-            document.getElementById('aws-progress').style.width = awsPercent + '%';
-            document.getElementById('coding-progress').style.width = codingPercent + '%';
-            document.getElementById('branding-progress').style.width = brandingPercent + '%';
-            document.getElementById('german-progress').style.width = germanPercent + '%';
-            document.getElementById('system-design-progress').style.width = systemDesignPercent + '%';
-
-            // Overall progress (average)
-            const overall = Math.round(
-                (awsPercent + codingPercent + brandingPercent + germanPercent + systemDesignPercent) / 5
-            );
-            document.getElementById('overall-progress').textContent = overall;
-        });
-    </script>
-</body>
+    <main id="content" class="p-6"></main>
+  </body>
 </html>
