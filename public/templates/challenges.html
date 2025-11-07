@@ -1,0 +1,165 @@
+<div class="container mx-auto px-12 py-8">
+  <header class="mb-8">
+    <div class="flex justify-between items-center">
+      <div>
+        <h1
+          class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-2"
+        >
+          Senior Developer Coding Challenges
+        </h1>
+        <p class="text-lg text-gray-600 dark:text-gray-300">
+          Top problems asked by German tech companies
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-6 flex flex-wrap gap-2 justify-center">
+      <span
+        class="px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium flex items-center"
+      >
+        <i class="fab fa-js mr-2"></i> JavaScript
+      </span>
+      <span
+        class="px-4 py-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-sm font-medium flex items-center"
+      >
+        <i class="fas fa-project-diagram mr-2"></i> Algorithms
+      </span>
+      <span
+        class="px-4 py-2 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-sm font-medium flex items-center"
+      >
+        <i class="fas fa-server mr-2"></i> System Design
+      </span>
+      <span
+        class="px-4 py-2 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded-full text-sm font-medium flex items-center"
+      >
+        <i class="fas fa-users mr-2"></i> Concurrency
+      </span>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="mt-8 bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+      <div
+        class="progress-bar bg-blue-600 dark:bg-blue-500 rounded-full h-2.5"
+        style="width: 12%"
+      ></div>
+    </div>
+    <div
+      class="mt-2 text-sm text-gray-600 dark:text-gray-400 flex justify-between"
+    >
+      <span></span>
+      <span></span>
+    </div>
+
+    <button
+      id="view-bookmarked"
+      class="px-3 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded-lg text-sm font-medium flex items-center gap-2"
+      title="View Bookmarked"
+    >
+      <i class="fas fa-bookmark"></i> Bookmarked
+    </button>
+  </header>
+
+  <div class="flex flex-col lg:flex-row gap-4">
+    <!-- Main content -->
+    <div class="w-full">
+      <!-- Search and filter -->
+      <!-- Update the search-filter container to enable searching for categories -->
+      <div
+        class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-6"
+        id="search-filter"
+      >
+        <div class="flex flex-col md:flex-row gap-4">
+          <div class="relative flex-grow">
+            <div
+              class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+            >
+              <i class="fas fa-search text-gray-400"></i>
+            </div>
+            <input
+              type="text"
+              id="title-search"
+              class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Search titles..."
+            />
+          </div>
+          <!-- Replace the category-select with a typed search dropdown using datalist -->
+          <div class="flex gap-2">
+            <input
+              list="category-list"
+              id="category-search"
+              class="border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Search or select category..."
+            />
+
+            <button
+              id="clear-category-search"
+              type="button"
+              class="right-2 top-1/2 text-gray-400 hover:text-red-500"
+              style="
+                background: none;
+                border: none;
+                padding: 0;
+                cursor: pointer;
+              "
+            >
+              <i class="fas fa-times"></i>
+            </button>
+            <datalist id="category-list">
+              <option value="Arrays"></option>
+              <option value="Strings"></option>
+              <option value="Trees"></option>
+              <option value="Graphs"></option>
+              <option value="HashMap"></option>
+              <option value="Linked List"></option>
+              <option value="Sliding Window"></option>
+              <option value="Binary Search"></option>
+              <option value="Expand Around Center"></option>
+              <option value="Deque"></option>
+              <option value="Two Pointers"></option>
+              <option value="Stack"></option>
+              <option value="Dynamic Programming"></option>
+              <option value="Backtracking"></option>
+              <option value="Heap"></option>
+              <option value="Matrix"></option>
+              <option value="System Design"></option>
+              <option value="Javascript"></option>
+              <option value="Design"></option>
+              <option value="Intervals"></option>
+              <option value="Prefix Sum"></option>
+              <option value="Recursion"></option>
+              <option value="DFS"></option>
+              <option value="BFS"></option>
+              <option value="Trie"></option>
+              <option value="Knapsack"></option>
+              <option value="Simulation"></option>
+              <option value="Voting Algorithm"></option>
+              <option value="Center Expansion"></option>
+              <option value="Greedy"></option>
+              <option value="In-Place"></option>
+              <option value="Preprocessing"></option>
+              <option value="Optimization"></option>
+              <option value="Timer"></option>
+              <option value="Validation"></option>
+              <option value="Bit Manipulation">
+                <!-- Add more tags if new ones are introduced in your challenge data -->
+              </option>
+            </datalist>
+
+            <select
+              id="difficulty-select"
+              class="border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="All">All Difficulties</option>
+              <option value="Easy">Easy</option>
+              <option value="Medium">Medium</option>
+              <option value="Hard">Hard</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Challenges container -->
+      <div id="challenges-container" class="space-y-6"></div>
+    </div>
+  </div>
+</div>

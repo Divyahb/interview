@@ -1,0 +1,118 @@
+[
+  {
+    "section": "German A1.1",
+    "items": [
+      {
+        "title": "Greetings & Introductions",
+        "link": "https://learngerman.dw.com/en/greetings-and-introductions/l-12345678"
+      },
+      {
+        "title": "Numbers & Time",
+        "link": "https://learngerman.dw.com/en/numbers-and-time/l-23456789"
+      },
+      {
+        "title": "Family & Relationships",
+        "link": "https://learngerman.dw.com/en/family-and-relationships/l-34567890"
+      },
+      {
+        "title": "Daily Activities",
+        "link": "https://learngerman.dw.com/en/daily-activities/l-45678901"
+      },
+      {
+        "title": "Food & Drink",
+        "link": "https://learngerman.dw.com/en/food-and-drink/l-56789012"
+      },
+      {
+        "title": "Shopping",
+        "link": "https://learngerman.dw.com/en/shopping/l-67890123"
+      }
+    ]
+  },
+  {
+    "section": "German A1.2",
+    "items": [
+      {
+        "title": "Directions & Places",
+        "link": "https://learngerman.dw.com/en/directions-and-places/l-78901234"
+      },
+      {
+        "title": "Describing People",
+        "link": "https://learngerman.dw.com/en/describing-people/l-89012345"
+      },
+      {
+        "title": "Weather & Seasons",
+        "link": "https://learngerman.dw.com/en/weather-and-seasons/l-90123456"
+      },
+      {
+        "title": "Hobbies & Leisure",
+        "link": "https://learngerman.dw.com/en/hobbies-and-leisure/l-01234567"
+      },
+      {
+        "title": "Health & Body",
+        "link": "https://learngerman.dw.com/en/health-and-body/l-12345679"
+      },
+      {
+        "title": "At the Doctor",
+        "link": "https://learngerman.dw.com/en/at-the-doctor/l-23456780"
+      }
+    ]
+  },
+  {
+    "section": "German A2.1",
+    "items": [
+      {
+        "title": "Work & Professions",
+        "link": "https://learngerman.dw.com/en/work-and-professions/l-34567891"
+      },
+      {
+        "title": "Living & Housing",
+        "link": "https://learngerman.dw.com/en/living-and-housing/l-45678902"
+      },
+      {
+        "title": "Travel & Transport",
+        "link": "https://learngerman.dw.com/en/travel-and-transport/l-56789013"
+      },
+      {
+        "title": "Media & Technology",
+        "link": "https://learngerman.dw.com/en/media-and-technology/l-67890124"
+      },
+      {
+        "title": "Celebrations & Holidays",
+        "link": "https://learngerman.dw.com/en/celebrations-and-holidays/l-78901235"
+      },
+      {
+        "title": "Nature & Environment",
+        "link": "https://learngerman.dw.com/en/nature-and-environment/l-89012346"
+      }
+    ]
+  },
+  {
+    "section": "German A2.2",
+    "items": [
+      {
+        "title": "Feelings & Emotions",
+        "link": "https://learngerman.dw.com/en/feelings-and-emotions/l-90123457"
+      },
+      {
+        "title": "Making Appointments",
+        "link": "https://learngerman.dw.com/en/making-appointments/l-01234568"
+      },
+      {
+        "title": "Giving Opinions",
+        "link": "https://learngerman.dw.com/en/giving-opinions/l-12345680"
+      },
+      {
+        "title": "Past & Future Tenses",
+        "link": "https://learngerman.dw.com/en/past-and-future-tenses/l-23456781"
+      },
+      {
+        "title": "Formal & Informal Language",
+        "link": "https://learngerman.dw.com/en/formal-and-informal-language/l-34567892"
+      },
+      {
+        "title": "German Culture",
+        "link": "https://learngerman.dw.com/en/german-culture/l-45678903"
+      }
+    ]
+  }
+]

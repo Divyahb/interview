@@ -1,0 +1,88 @@
+<section class="container mx-auto px-6 py-8 space-y-10">
+  <!-- Header -->
+  <header class="space-y-4">
+    <h1 class="text-3xl font-bold text-blue-700">🧠 System Design Progress</h1>
+
+    <!-- Progress Bar -->
+    <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+      <div
+        id="system-design-progress-bar"
+        class="bg-green-500 h-full w-0 transition-all duration-300"
+      ></div>
+    </div>
+
+    <div class="flex justify-between items-center text-sm text-gray-700">
+      <span id="system-design-progress-text">0% completed</span>
+      <span id="system-design-progress-count">0/30 challenges completed</span>
+    </div>
+  </header>
+
+  <!-- Checklist Section -->
+  <section>
+    <h2 class="text-xl font-semibold mb-4">
+      📋 Top 30 System Design Challenges
+    </h2>
+    <div id="system-design-checklist-container" class="space-y-3">
+      <!-- Checklist will be rendered here -->
+    </div>
+  </section>
+
+  <!-- Resources Section -->
+  <section>
+    <h2 class="text-xl font-semibold mb-4">📚 Additional Resources</h2>
+    <ul class="list-disc list-inside space-y-3 text-blue-600">
+      <li>
+        <a
+          href="https://github.com/donnemartin/system-design-primer"
+          target="_blank"
+          rel="noopener"
+          class="underline"
+        >
+          System Design Primer (GitHub)
+        </a>
+      </li>
+      <li>
+        <a
+          href="https://www.educative.io/courses/grokking-the-system-design-interview"
+          target="_blank"
+          rel="noopener"
+          class="underline"
+        >
+          Grokking the System Design Interview
+        </a>
+      </li>
+      <li>
+        <a
+          href="https://www.youtube.com/playlist?list=PLTCrU9sGyburBw9wNOHebv9SjlE4Elv5a"
+          target="_blank"
+          rel="noopener"
+          class="underline"
+        >
+          System Design Interviews (YouTube)
+        </a>
+      </li>
+      <li>
+        <a
+          href="https://leetcode.com/problemset/all/?topicSlugs=system-design"
+          target="_blank"
+          rel="noopener"
+          class="underline"
+        >
+          LeetCode System Design Problems
+        </a>
+      </li>
+      <li>
+        <a
+          href="https://www.interviewbit.com/system-design-interview-questions/"
+          target="_blank"
+          rel="noopener"
+          class="underline"
+        >
+          InterviewBit System Design Questions
+        </a>
+      </li>
+    </ul>
+  </section>
+</section>
+
+<script defer src="../scripts/system_design.js"></script>
