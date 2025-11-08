@@ -1,3 +1,13 @@
+fragmentRegistry.register("dashboard", function initDashboard() {
+  updateCountdowns();
+  updateProgress("aws", getProgress("aws-overall-percent"));
+  updateProgress("coding", getProgress("coding-overall-percent"));
+  updateProgress("branding", getProgress("branding-overall-percent"));
+  updateProgress("german", getProgress("german-overall-percent"));
+  updateProgress("system-design", getProgress("system-design-overall-percent"));
+  updateTopInfo();
+});
+
 const TIMELINE = window.TIMELINE;
 
 // Format date as "Friday, 07 Nov 2025"
@@ -80,8 +90,8 @@ function updateTopInfo() {
   document.getElementById("overall-progress").textContent = avg;
 }
 
-// Initialize dashboard
-(function initDashboard() {
+/* // Initialize dashboard
+function initDashboard() {
   updateCountdowns();
   updateProgress("aws", getProgress("aws-overall-percent"));
   updateProgress("coding", getProgress("coding-overall-percent"));
@@ -89,4 +99,4 @@ function updateTopInfo() {
   updateProgress("german", getProgress("german-overall-percent"));
   updateProgress("system-design", getProgress("system-design-overall-percent"));
   updateTopInfo();
-})();
+}; */

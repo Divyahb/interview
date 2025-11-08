@@ -1,5 +1,5 @@
 {
-  "Week 1: Core Services & IAM (Aug 1–7)": [
+  "Week 1: Core Services & IAM": [
     {
       "text": "AWS Overview + Free Tier Setup",
       "link": "https://www.coursera.org/learn/introduction-to-aws-for-cloud-beginners"
@@ -29,7 +29,7 @@
       "link": "https://www.w3schools.com/aws/aws_quiz.php"
     }
   ],
-  "Week 2: Developer Tools & Serverless (Aug 8–14)": [
+  "Week 2: Developer Tools & Serverless": [
     {
       "text": "Lambda Functions",
       "link": "https://www.udemy.com/course/aws-lambda-serverless-architecture/"
@@ -59,7 +59,7 @@
       "link": "https://quizlet.com/392359849/aws-cloud-practitioner-exam-questions-flash-cards/"
     }
   ],
-  "Week 3: Monitoring, Deployment & Security (Aug 15–21)": [
+  "Week 3: Monitoring, Deployment & Security": [
     {
       "text": "X-Ray + Tracing",
       "link": "https://www.coursera.org/learn/aws-aws-x-ray-getting-started"
@@ -89,7 +89,7 @@
       "link": "https://www.credly.com/"
     }
   ],
-  "Week 4: Final Prep & Exams (Aug 22–Sep 5)": [
+  "Week 4: Final Prep & Exams": [
     {
       "text": "Practice Exams + Weak Topic Review",
       "link": "https://digitalcloud.training/free-aws-practice-exam-questions/"

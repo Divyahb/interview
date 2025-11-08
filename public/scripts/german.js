@@ -21,10 +21,10 @@ function renderChecklist(checklistData) {
 }
 
 // Update progress bar and text
-function updateProgress() {
+function updateProgress(checklistData) {
   const total = 24;
   let completed = 0;
-  checklistData.forEach((section, sIdx) => {
+  checklistData?.forEach((section, sIdx) => {
     section.items.forEach((item, iIdx) => {
       const itemId = `german-${sIdx}-${iIdx}`;
       if (localStorage.getItem(itemId) === "true") completed++;
@@ -45,7 +45,7 @@ function updateProgress() {
 function initializeGermanChecklist(checklistData) {
   renderChecklist(checklistData);
   // Restore checked state
-  checklistData.forEach((section, sIdx) => {
+  checklistData?.forEach((section, sIdx) => {
     section.items.forEach((item, iIdx) => {
       const itemId = `german-${sIdx}-${iIdx}`;
       const checkbox = document.getElementById(itemId);
@@ -54,21 +54,23 @@ function initializeGermanChecklist(checklistData) {
       }
       checkbox.addEventListener("change", function () {
         localStorage.setItem(itemId, this.checked ? "true" : "false");
-        updateProgress();
+        updateProgress(checklistData);
       });
     });
   });
-  updateProgress();
+  updateProgress(checklistData);
 }
-fetch("../data/german.json")
-  .then((response) => {
-    if (!response.ok) throw new Error("Failed to load checklist data");
-    return response.json();
-  })
-  .then((checklistData) => {
-    // Render checklist
-    initializeGermanChecklist(checklistData);
-  })
-  .catch((error) => {
-    console.error("Error loading German checklist data:", error);
-  });
+fragmentRegistry.register("german", function initGermanPage() {
+  fetch("../data/german.json")
+    .then((response) => {
+      if (!response.ok) throw new Error("Failed to load checklist data");
+      return response.json();
+    })
+    .then((checklistData) => {
+      // Render checklist
+      initializeGermanChecklist(checklistData);
+    })
+    .catch((error) => {
+      console.error("Error loading German checklist data:", error);
+    });
+});
