@@ -30,8 +30,16 @@ function loadRoute(routeKey) {
     .then((html) => {
       content.innerHTML = html;
       document.title = route.title;
-      loadFragmentScript(route.script);
-      initializeScripts();
+
+      const script = document.createElement("script");
+      script.src = `./scripts/${route.script}`;
+      script.onload = () => {
+        const initFn = fragmentRegistry.get(route.key);
+        if (typeof initFn === "function") {
+          initFn();
+        }
+      };
+      document.body.appendChild(script);
     })
     .catch((error) => {
       loadFallback(`Error loading ${route.template}: ${error.message}`);
@@ -39,9 +47,19 @@ function loadRoute(routeKey) {
 }
 
 function loadFragmentScript(scriptName) {
+  // Remove any existing script with the same src
+  const existing = document.querySelector(
+    `script[data-fragment-script="${scriptName}"]`
+  );
+  if (existing) {
+    existing.remove();
+  }
+
+  // Create a new script tag with cache-busting query
   const script = document.createElement("script");
-  script.src = `./scripts/${scriptName}`;
+  script.src = `./scripts/${scriptName}?t=${Date.now()}`;
   script.type = "module";
+  script.setAttribute("data-fragment-script", scriptName);
   document.body.appendChild(script);
 }
 

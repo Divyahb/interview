@@ -1,78 +1,4 @@
-// Replace brandingChecklistData with the updated version:
-const brandingChecklistData = [
-  {
-    section: "LinkedIn Branding",
-    items: [
-      {
-        title: "Update profile photo",
-        link: "https://www.linkedin.com/help/linkedin/answer/71/change-your-profile-photo",
-      },
-      {
-        title: "Write a compelling headline",
-        link: "https://www.linkedin.com/help/linkedin/answer/1128/edit-your-headline",
-      },
-      {
-        title: "Craft a strong summary/about section",
-        link: "https://www.linkedin.com/help/linkedin/answer/46644/edit-your-summary",
-      },
-      {
-        title: "Add relevant skills",
-        link: "https://www.linkedin.com/help/linkedin/answer/1197/add-or-remove-skills",
-      },
-      {
-        title: "Request recommendations",
-        link: "https://www.linkedin.com/help/linkedin/answer/96/request-a-recommendation",
-      },
-      {
-        title: "Create a good resume",
-        link: "https://www.linkedin.com/help/linkedin/answer/111/edit-your-resume",
-      },
-      {
-        title: "Update profile in German",
-        link: "https://www.linkedin.com/help/linkedin/answer/2974/add-a-profile-in-another-language",
-      },
-      {
-        title: "Post twice every week in LinkedIn",
-        link: "https://www.linkedin.com/help/linkedin/answer/2974/add-a-profile-in-another-language",
-      },
-    ],
-  },
-  {
-    section: "GitHub Profile",
-    items: [
-      {
-        title: "Create a professional profile README",
-        link: "https://docs.github.com/en/github/setting-up-and-managing-your-github-profile/customizing-your-profile/about-your-profile",
-      },
-      {
-        title: "Pin top repositories",
-        link: "https://docs.github.com/en/github/setting-up-and-managing-your-github-profile/pinning-repositories-to-your-profile",
-      },
-      {
-        title: "Add a profile photo and bio",
-        link: "https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile",
-      },
-      {
-        title: "Showcase projects with good READMEs",
-        link: "https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-readmes",
-      },
-      {
-        title: "Enable GitHub Sponsors or add contact info",
-        link: "https://docs.github.com/en/sponsors/getting-paid-through-github-sponsors/about-github-sponsors-for-individuals",
-      },
-      {
-        title: "Complete Project 1: Resume/Website Generator with AI",
-        link: "https://github.com/topics/ai-resume-generator",
-      },
-      {
-        title: "Complete Project 2: Build a configurable planner hub",
-        link: "https://github.com/topics/productivity-planner",
-      },
-    ],
-  },
-];
-
-function renderBrandingChecklist() {
+function renderBrandingChecklist(brandingChecklistData) {
   const container = document.getElementById("branding-checklist-container");
   container.innerHTML = "";
   brandingChecklistData.forEach((section, sIdx) => {
@@ -112,7 +38,7 @@ function renderBrandingChecklist() {
   });
 }
 
-function updateBrandingProgress() {
+function updateBrandingProgress(brandingChecklistData) {
   const total = 15;
   let completed = 0;
   brandingChecklistData.forEach((section, sIdx) => {
@@ -132,8 +58,8 @@ function updateBrandingProgress() {
   localStorage.setItem("branding-overall-percent", percent);
 }
 
-function initializeBrandingChecklist() {
-  renderBrandingChecklist();
+function initializeBrandingChecklist(brandingChecklistData) {
+  renderBrandingChecklist(brandingChecklistData);
   brandingChecklistData.forEach((section, sIdx) => {
     section.items.forEach((item, iIdx) => {
       const itemId = `branding-${sIdx}-${iIdx}`;
@@ -143,11 +69,21 @@ function initializeBrandingChecklist() {
       }
       checkbox.addEventListener("change", function () {
         localStorage.setItem(itemId, this.checked ? "true" : "false");
-        updateBrandingProgress();
+        updateBrandingProgress(brandingChecklistData);
       });
     });
   });
-  updateBrandingProgress();
+  updateBrandingProgress(brandingChecklistData);
 }
 
-initializeBrandingChecklist();
+fragmentRegistry.register("branding", function initBrandingPage() {
+  fetch("../data/branding.json")
+    .then((response) => {
+      if (!response.ok) throw new Error("Failed to load checklist data");
+      return response.json();
+    })
+    .then((checklistData) => {
+      brandingChecklistData = checklistData;
+      initializeBrandingChecklist(brandingChecklistData);
+    });
+});

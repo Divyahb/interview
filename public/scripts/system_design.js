@@ -1,14 +1,16 @@
-fetch("../data/design.json")
-  .then((response) => {
-    if (!response.ok) throw new Error("Failed to load challenges data");
-    return response.json();
-  })
-  .then((systemDesignChallenges) => {
-    initializeSystemDesignChecklist(systemDesignChallenges);
-  })
-  .catch((error) => {
-    console.error("Error loading challenges:", error);
-  });
+fragmentRegistry.register("system_design", function initSystemDesignPage() {
+  fetch("../data/design.json")
+    .then((response) => {
+      if (!response.ok) throw new Error("Failed to load challenges data");
+      return response.json();
+    })
+    .then((systemDesignChallenges) => {
+      initializeSystemDesignChecklist(systemDesignChallenges);
+    })
+    .catch((error) => {
+      console.error("Error loading challenges:", error);
+    });
+});
 
 function renderSystemDesignChecklist(systemDesignChallenges) {
   const container = document.getElementById(
@@ -69,7 +71,7 @@ function initializeSystemDesignChecklist(systemDesignChallenges) {
     }
     checkbox.addEventListener("change", function () {
       localStorage.setItem(itemId, this.checked ? "true" : "false");
-      updateSystemDesignProgress();
+      updateSystemDesignProgress(systemDesignChallenges);
     });
   });
   updateSystemDesignProgress(systemDesignChallenges);
