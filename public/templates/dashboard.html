@@ -1,130 +1,168 @@
-<section class="container mx-auto px-6 py-8 space-y-8">
+<section class="container mx-auto px-6 py-10 space-y-8">
   <!-- Header -->
   <header class="space-y-2">
     <h1 class="text-3xl font-bold text-blue-700">📊 Planner Hub</h1>
     <p class="text-gray-700 text-sm">
-      Divya's journey to success! Track your progress and deadlines for each
-      focus area.
+      <span class="font-semibold" id="user-name">User</span>'s journey to success! Track your progress and deadlines for each focus area.
     </p>
   </header>
+
+  <!-- Config Button -->
+  <div class="flex justify-end">
+    <button
+      id="open-config"
+      class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+    >
+      ⚙️ Configure Timeline
+    </button>
+  </div>
+
+  <!-- Config Dialog -->
+  <div
+    id="config-dialog"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden"
+  >
+    <div class="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-3xl space-y-6">
+      <h2 class="text-xl font-semibold text-gray-800 dark:text-white">Configure Timeline</h2>
+
+      <!-- Name -->
+      <div>
+        <label class="block text-sm font-medium mb-1">Your Name</label>
+        <input type="text" id="config-name" class="w-full p-2 border rounded" />
+      </div>
+
+      <!-- Start + Target Dates -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium mb-1">Start Date</label>
+          <input type="date" id="config-start-date" class="w-full p-2 border rounded" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Target Date</label>
+          <input type="date" id="config-target-date" class="w-full p-2 border rounded" />
+        </div>
+      </div>
+
+      <!-- Section Deadlines -->
+      <div id="config-section-dates" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <!-- Dynamically populated section end dates -->
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex justify-end gap-4">
+        <button id="save-config" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
+          Save
+        </button>
+        <button id="clear-config" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition">
+          Clear
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Blocking Overlay -->
+  <div
+    id="blocker-overlay"
+    class="fixed top-0 left-0 w-full h-full min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center z-40"
+  >
+    <div class="text-center space-y-4">
+      <h2 class="text-xl font-semibold text-gray-800 dark:text-white">Welcome!</h2>
+      <p class="text-gray-600 dark:text-gray-300">Please configure your timeline to begin.</p>
+      <button
+        id="trigger-config"
+        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+      >
+        Configure Now
+      </button>
+    </div>
+  </div>
 
   <!-- Top Info -->
   <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-gray-800">
     <p>📅 Today: <span id="today-date" class="font-medium"></span></p>
-    <p>⏱️ Day <span id="day-number" class="font-medium"></span> of 60</p>
-    <p>
-      🚀 Overall Interview Prep Progress:
-      <span id="overall-progress" class="font-medium"></span>%
-    </p>
+    <p>⏱️ Day <span id="day-number" class="font-medium"></span></p>
+    <p>🚀 Overall Interview Prep Progress: <span id="overall-progress" class="font-medium"></span>%</p>
   </div>
 
   <!-- Deadline Cards -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
     <!-- AWS -->
-    <div
-      class="border rounded-lg p-4 shadow-sm bg-white dark:bg-gray-800"
-      id="aws-deadline"
-    >
+    <div class="border rounded-lg p-4 shadow-sm bg-white dark:bg-gray-800" id="aws-deadline">
       <h3 class="text-lg font-semibold text-yellow-600 flex items-center">
         <i class="fab fa-aws mr-2"></i>AWS Certification
       </h3>
       <p class="mt-2 text-sm">
         🗓️ Deadline: <span class="deadline-date" data-key="aws"></span><br />
-        ⏳ <span class="days-left font-medium" data-key="aws"></span> days
-        remaining
+        ⏳ <span class="days-left font-medium" data-key="aws"></span> days remaining
       </p>
-      <div class="w-full bg-gray-200 rounded-full h-3 mt-3">
-        <div
-          class="bg-yellow-500 h-full w-0 transition-all duration-300"
-          id="aws-progress"
-        ></div>
+      <div class="w-full bg-gray-200 rounded-full h-3 mt-3 relative">
+        <div class="bg-yellow-500 h-full w-0 transition-all duration-300" id="aws-progress"></div>
+        <span class="absolute right-2 top-0 text-xs font-medium text-gray-700" id="aws-progress-text"></span>
       </div>
     </div>
 
     <!-- Coding -->
-    <div
-      class="border rounded-lg p-4 shadow-sm bg-white dark:bg-gray-800"
-      id="coding-deadline"
-    >
+    <div class="border rounded-lg p-4 shadow-sm bg-white dark:bg-gray-800" id="coding-deadline">
       <h3 class="text-lg font-semibold text-blue-600 flex items-center">
         <i class="fas fa-code mr-2"></i>Coding
       </h3>
       <p class="mt-2 text-sm">
         🗓️ Deadline: <span class="deadline-date" data-key="coding"></span><br />
-        ⏳ <span class="days-left font-medium" data-key="coding"></span> days
-        remaining
+        ⏳ <span class="days-left font-medium" data-key="coding"></span> days remaining
       </p>
-      <div class="w-full bg-gray-200 rounded-full h-3 mt-3">
-        <div
-          class="bg-blue-500 h-full w-0 transition-all duration-300"
-          id="coding-progress"
-        ></div>
+      <div class="w-full bg-gray-200 rounded-full h-3 mt-3 relative">
+        <div class="bg-blue-500 h-full w-0 transition-all duration-300" id="coding-progress"></div>
+        <span class="absolute right-2 top-0 text-xs font-medium text-gray-700" id="coding-progress-text"></span>
       </div>
     </div>
 
-    <!-- Resume + GitHub -->
-    <div
-      class="border rounded-lg p-4 shadow-sm bg-white dark:bg-gray-800"
-      id="branding-deadline"
-    >
+    <!-- Branding -->
+    <div class="border rounded-lg p-4 shadow-sm bg-white dark:bg-gray-800" id="branding-deadline">
       <h3 class="text-lg font-semibold text-green-600 flex items-center">
         <i class="fas fa-id-badge mr-2"></i>Resume + GitHub
       </h3>
       <p class="mt-2 text-sm">
-        🗓️ Deadline: <span class="deadline-date" data-key="branding"></span
-        ><br />
-        ⏳ <span class="days-left font-medium" data-key="branding"></span> days
-        remaining
+        🗓️ Deadline: <span class="deadline-date" data-key="branding"></span><br />
+        ⏳ <span class="days-left font-medium" data-key="branding"></span> days remaining
       </p>
-      <div class="w-full bg-gray-200 rounded-full h-3 mt-3">
-        <div
-          class="bg-green-500 h-full w-0 transition-all duration-300"
-          id="branding-progress"
-        ></div>
+      <div class="w-full bg-gray-200 rounded-full h-3 mt-3 relative">
+        <div class="bg-green-500 h-full w-0 transition-all duration-300" id="branding-progress"></div>
+        <span class="absolute right-2 top-0 text-xs font-medium text-gray-700" id="branding-progress-text"></span>
       </div>
     </div>
 
     <!-- German -->
-    <div
-      class="border rounded-lg p-4 shadow-sm bg-white dark:bg-gray-800"
-      id="german-deadline"
-    >
+    <div class="border rounded-lg p-4 shadow-sm bg-white dark:bg-gray-800" id="german-deadline">
       <h3 class="text-lg font-semibold text-pink-600 flex items-center">
         <i class="fas fa-language mr-2"></i>German Language
       </h3>
       <p class="mt-2 text-sm">
         🗓️ Deadline: <span class="deadline-date" data-key="german"></span><br />
-        ⏳ <span class="days-left font-medium" data-key="german"></span> days
-        remaining
+        ⏳ <span class="days-left font-medium" data-key="german"></span> days remaining
       </p>
-      <div class="w-full bg-gray-200 rounded-full h-3 mt-3">
-        <div
-          class="bg-pink-500 h-full w-0 transition-all duration-300"
-          id="german-progress"
-        ></div>
+      <div class="w-full bg-gray-200 rounded-full h-3 mt-3 relative">
+        <div class="bg-pink-500 h-full w-0 transition-all duration-300" id="german-progress"></div>
+        <span class="absolute right-2 top-0 text-xs font-medium text-gray-700" id="german-progress-text"></span>
       </div>
     </div>
 
     <!-- System Design -->
-    <div
-      class="border rounded-lg p-4 shadow-sm bg-white dark:bg-gray-800"
-      id="system-design-deadline"
-    >
+    <div class="border rounded-lg p-4 shadow-sm bg-white dark:bg-gray-800" id="system-design-deadline">
       <h3 class="text-lg font-semibold text-purple-600 flex items-center">
         <i class="fas fa-network-wired mr-2"></i>System Design
       </h3>
       <p class="mt-2 text-sm">
-        🗓️ Deadline: <span class="deadline-date" data-key="systemDesign"></span
-        ><br />
-        ⏳
-        <span class="days-left font-medium" data-key="systemDesign"></span> days
-        remaining
+        🗓️ Deadline: <span class="deadline-date" data-key="systemDesign"></span><br />
+        ⏳ <span class="days-left font-medium" data-key="systemDesign"></span> days remaining
       </p>
-      <div class="w-full bg-gray-200 rounded-full h-3 mt-3">
-        <div
+              <div
           class="bg-purple-500 h-full w-0 transition-all duration-300"
           id="system-design-progress"
         ></div>
+        <span
+          class="absolute right-2 top-0 text-xs font-medium text-gray-700"
+          id="system-design-progress-text"
+        ></span>
       </div>
     </div>
   </div>
