@@ -1,3 +1,84 @@
+class SystemDesignChecklistController {
+  constructor(config) {
+    this.containerId = config.containerId;
+    this.progressBarId = config.progressBarId;
+    this.progressTextId = config.progressTextId;
+    this.progressCountId = config.progressCountId;
+    this.storagePrefix = config.storagePrefix;
+    this.data = [];
+  }
+
+  init(data) {
+    this.data = data;
+    this.render();
+    this.restoreState();
+    this.updateProgress();
+  }
+
+  render() {
+    const container = document.getElementById(this.containerId);
+    container.innerHTML = "";
+
+    this.data.forEach((challenge, idx) => {
+      const itemId = `${this.storagePrefix}-${idx}`;
+      const itemDiv = document.createElement("div");
+      itemDiv.className = "checklist-item";
+
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.id = itemId;
+      checkbox.setAttribute("data-item", itemId);
+
+      const label = document.createElement("label");
+      label.htmlFor = itemId;
+
+      const link = document.createElement("a");
+      link.href = challenge.link;
+      link.target = "_blank";
+      link.textContent = challenge.title;
+
+      label.appendChild(link);
+      itemDiv.appendChild(checkbox);
+      itemDiv.appendChild(label);
+      container.appendChild(itemDiv);
+    });
+  }
+
+  restoreState() {
+    this.data.forEach((_, idx) => {
+      const itemId = `${this.storagePrefix}-${idx}`;
+      const checkbox = document.getElementById(itemId);
+      if (localStorage.getItem(itemId) === "true") {
+        checkbox.checked = true;
+      }
+      checkbox.addEventListener("change", () => {
+        localStorage.setItem(itemId, checkbox.checked ? "true" : "false");
+        this.updateProgress();
+      });
+    });
+  }
+
+  updateProgress() {
+    const total = this.data.length;
+    let completed = 0;
+
+    this.data.forEach((_, idx) => {
+      const itemId = `${this.storagePrefix}-${idx}`;
+      if (localStorage.getItem(itemId) === "true") completed++;
+    });
+
+    const percent = total ? Math.round((completed / total) * 100) : 0;
+    document.getElementById(this.progressBarId).style.width = `${percent}%`;
+    document.getElementById(
+      this.progressTextId
+    ).textContent = `${percent}% completed`;
+    document.getElementById(
+      this.progressCountId
+    ).textContent = `${completed}/${total} challenges completed`;
+    localStorage.setItem(`${this.storagePrefix}-overall-percent`, percent);
+  }
+}
+
 fragmentRegistry.register("system_design", function initSystemDesignPage() {
   fetch("../data/design.json")
     .then((response) => {
@@ -5,74 +86,16 @@ fragmentRegistry.register("system_design", function initSystemDesignPage() {
       return response.json();
     })
     .then((systemDesignChallenges) => {
-      initializeSystemDesignChecklist(systemDesignChallenges);
+      const controller = new SystemDesignChecklistController({
+        containerId: "system-design-checklist-container",
+        progressBarId: "system-design-progress-bar",
+        progressTextId: "system-design-progress-text",
+        progressCountId: "system-design-progress-count",
+        storagePrefix: "system-design",
+      });
+      controller.init(systemDesignChallenges);
     })
     .catch((error) => {
       console.error("Error loading challenges:", error);
     });
 });
-
-function renderSystemDesignChecklist(systemDesignChallenges) {
-  const container = document.getElementById(
-    "system-design-checklist-container"
-  );
-  container.innerHTML = "";
-  systemDesignChallenges.forEach((challenge, idx) => {
-    const itemId = `system-design-${idx}`;
-    const itemDiv = document.createElement("div");
-    itemDiv.className = "checklist-item";
-
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.id = itemId;
-    checkbox.setAttribute("data-item", itemId);
-
-    const label = document.createElement("label");
-    label.htmlFor = itemId;
-
-    const link = document.createElement("a");
-    link.href = challenge.link;
-    link.target = "_blank";
-    link.textContent = challenge.title;
-
-    label.appendChild(link);
-    itemDiv.appendChild(checkbox);
-    itemDiv.appendChild(label);
-    container.appendChild(itemDiv);
-  });
-}
-
-function updateSystemDesignProgress(systemDesignChallenges) {
-  const total = systemDesignChallenges.length;
-  let completed = 0;
-  systemDesignChallenges.forEach((_, idx) => {
-    const itemId = `system-design-${idx}`;
-    if (localStorage.getItem(itemId) === "true") completed++;
-  });
-  const percent = Math.round((completed / total) * 100);
-  document.getElementById("system-design-progress-bar").style.width =
-    percent + "%";
-  document.getElementById(
-    "system-design-progress-text"
-  ).textContent = `${percent}% completed`;
-  document.getElementById(
-    "system-design-progress-count"
-  ).textContent = `${completed}/${total} challenges completed`;
-  localStorage.setItem("system-design-overall-percent", percent);
-}
-
-function initializeSystemDesignChecklist(systemDesignChallenges) {
-  renderSystemDesignChecklist(systemDesignChallenges);
-  systemDesignChallenges.forEach((_, idx) => {
-    const itemId = `system-design-${idx}`;
-    const checkbox = document.getElementById(itemId);
-    if (localStorage.getItem(itemId) === "true") {
-      checkbox.checked = true;
-    }
-    checkbox.addEventListener("change", function () {
-      localStorage.setItem(itemId, this.checked ? "true" : "false");
-      updateSystemDesignProgress(systemDesignChallenges);
-    });
-  });
-  updateSystemDesignProgress(systemDesignChallenges);
-}

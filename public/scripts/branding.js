@@ -1,79 +1,98 @@
-function renderBrandingChecklist(brandingChecklistData) {
-  const container = document.getElementById("branding-checklist-container");
-  container.innerHTML = "";
-  brandingChecklistData.forEach((section, sIdx) => {
-    const sectionDiv = document.createElement("div");
-    sectionDiv.className = "checklist-section";
+class BrandingChecklistController {
+  constructor(config) {
+    this.containerId = config.containerId;
+    this.progressBarId = config.progressBarId;
+    this.progressTextId = config.progressTextId;
+    this.progressCountId = config.progressCountId;
+    this.storagePrefix = config.storagePrefix;
+    this.total = config.total;
+    this.data = [];
+  }
 
-    const heading = document.createElement("h3");
-    heading.className = "text-lg font-semibold mb-2";
-    heading.textContent = section.section;
-    sectionDiv.appendChild(heading);
+  init(data) {
+    this.data = data;
+    this.render();
+    this.restoreState();
+    this.updateProgress();
+  }
 
-    section.items.forEach((item, iIdx) => {
-      const itemId = `branding-${sIdx}-${iIdx}`;
-      const itemDiv = document.createElement("div");
-      itemDiv.className = "checklist-item";
+  render() {
+    const container = document.getElementById(this.containerId);
+    container.innerHTML = "";
 
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.id = itemId;
-      checkbox.setAttribute("data-item", itemId);
+    this.data.forEach((section, sIdx) => {
+      const sectionDiv = document.createElement("div");
+      sectionDiv.className = "checklist-section";
 
-      const label = document.createElement("label");
-      label.htmlFor = itemId;
+      const heading = document.createElement("h3");
+      heading.className = "text-lg font-semibold mb-2";
+      heading.textContent = section.section;
+      sectionDiv.appendChild(heading);
 
-      const link = document.createElement("a");
-      link.href = item.link;
-      link.target = "_blank";
-      link.textContent = item.title;
+      section.items.forEach((item, iIdx) => {
+        const itemId = `${this.storagePrefix}-${sIdx}-${iIdx}`;
 
-      label.appendChild(link);
-      itemDiv.appendChild(checkbox);
-      itemDiv.appendChild(label);
-      sectionDiv.appendChild(itemDiv);
+        const itemDiv = document.createElement("div");
+        itemDiv.className = "checklist-item";
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.id = itemId;
+        checkbox.setAttribute("data-item", itemId);
+
+        const label = document.createElement("label");
+        label.htmlFor = itemId;
+
+        const link = document.createElement("a");
+        link.href = item.link;
+        link.target = "_blank";
+        link.textContent = item.title;
+
+        label.appendChild(link);
+        itemDiv.appendChild(checkbox);
+        itemDiv.appendChild(label);
+        sectionDiv.appendChild(itemDiv);
+      });
+
+      container.appendChild(sectionDiv);
     });
+  }
 
-    container.appendChild(sectionDiv);
-  });
-}
-
-function updateBrandingProgress(brandingChecklistData) {
-  const total = 15;
-  let completed = 0;
-  brandingChecklistData.forEach((section, sIdx) => {
-    section.items.forEach((item, iIdx) => {
-      const itemId = `branding-${sIdx}-${iIdx}`;
-      if (localStorage.getItem(itemId) === "true") completed++;
-    });
-  });
-  const percent = Math.round((completed / total) * 100);
-  document.getElementById("branding-progress-bar").style.width = percent + "%";
-  document.getElementById(
-    "branding-progress-text"
-  ).textContent = `${percent}% completed`;
-  document.getElementById(
-    "branding-progress-count"
-  ).textContent = `${completed}/${total} action items completed`;
-  localStorage.setItem("branding-overall-percent", percent);
-}
-
-function initializeBrandingChecklist(brandingChecklistData) {
-  renderBrandingChecklist(brandingChecklistData);
-  brandingChecklistData.forEach((section, sIdx) => {
-    section.items.forEach((item, iIdx) => {
-      const itemId = `branding-${sIdx}-${iIdx}`;
-      const checkbox = document.getElementById(itemId);
-      if (localStorage.getItem(itemId) === "true") {
-        checkbox.checked = true;
-      }
-      checkbox.addEventListener("change", function () {
-        localStorage.setItem(itemId, this.checked ? "true" : "false");
-        updateBrandingProgress(brandingChecklistData);
+  restoreState() {
+    this.data.forEach((section, sIdx) => {
+      section.items.forEach((item, iIdx) => {
+        const itemId = `${this.storagePrefix}-${sIdx}-${iIdx}`;
+        const checkbox = document.getElementById(itemId);
+        if (localStorage.getItem(itemId) === "true") {
+          checkbox.checked = true;
+        }
+        checkbox.addEventListener("change", () => {
+          localStorage.setItem(itemId, checkbox.checked ? "true" : "false");
+          this.updateProgress();
+        });
       });
     });
-  });
-  updateBrandingProgress(brandingChecklistData);
+  }
+
+  updateProgress() {
+    let completed = 0;
+    this.data.forEach((section, sIdx) => {
+      section.items.forEach((item, iIdx) => {
+        const itemId = `${this.storagePrefix}-${sIdx}-${iIdx}`;
+        if (localStorage.getItem(itemId) === "true") completed++;
+      });
+    });
+
+    const percent = Math.round((completed / this.total) * 100);
+    document.getElementById(this.progressBarId).style.width = `${percent}%`;
+    document.getElementById(
+      this.progressTextId
+    ).textContent = `${percent}% completed`;
+    document.getElementById(
+      this.progressCountId
+    ).textContent = `${completed}/${this.total} action items completed`;
+    localStorage.setItem(`${this.storagePrefix}-overall-percent`, percent);
+  }
 }
 
 fragmentRegistry.register("branding", function initBrandingPage() {
@@ -83,7 +102,17 @@ fragmentRegistry.register("branding", function initBrandingPage() {
       return response.json();
     })
     .then((checklistData) => {
-      brandingChecklistData = checklistData;
-      initializeBrandingChecklist(brandingChecklistData);
+      const controller = new BrandingChecklistController({
+        containerId: "branding-checklist-container",
+        progressBarId: "branding-progress-bar",
+        progressTextId: "branding-progress-text",
+        progressCountId: "branding-progress-count",
+        storagePrefix: "branding",
+        total: 15,
+      });
+      controller.init(checklistData);
+    })
+    .catch((error) => {
+      console.error("Error loading branding checklist data:", error);
     });
 });
