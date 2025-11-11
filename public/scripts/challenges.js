@@ -1,13 +1,7 @@
-fragmentRegistry.register("challenges", function initChallengesPage() {
-  fetch("./output.html")
-    .then((res) => res.text())
-    .then((html) => {
-      document.getElementById("challenges-container").innerHTML = html;
-      initializeChallengeFeatures();
-    });
-
-  function initializeChallengeFeatures() {
-    const categories = [
+class ChallengeManager {
+  constructor(containerId = "challenges-container") {
+    this.container = document.getElementById(containerId);
+    this.categories = new Set([
       "Arrays",
       "Strings",
       "Trees",
@@ -44,57 +38,74 @@ fragmentRegistry.register("challenges", function initChallengesPage() {
       "Timer",
       "Validation",
       "Bit Manipulation",
-    ];
+    ]);
+    this.difficulties = new Set(["Easy", "Medium", "Hard"]);
+  }
 
-    const difficulties = ["Easy", "Medium", "Hard"];
+  async init() {
+    const html = await this.loadHTML("templates/output.html");
+    this.container.innerHTML = html;
+    this.extractTagsFromCards();
+    this.injectCategoryDatalist();
+    this.injectDifficultyOptions();
+    this.bindSolutionToggles();
+    this.bindCompletionMarkers();
+    this.bindBookmarkToggles();
+    this.bindBookmarkView();
+    this.bindTitleSearch();
+    this.bindCategorySearch();
+    this.bindClearCategory();
+    this.bindDifficultyFilter();
+    this.updateProgress();
+  }
 
+  async loadHTML(path) {
+    const res = await fetch(path);
+    if (!res.ok) throw new Error("Failed to load challenge HTML");
+    return res.text();
+  }
+
+  extractTagsFromCards() {
     document.querySelectorAll(".challenge-card").forEach((card) => {
       const category = card.dataset.category || "";
       const difficulty = card.dataset.difficulty || "";
-
-      category.split(",").forEach((tag) => {
-        if (tag.trim()) categories.add(tag.trim());
-      });
-
-      if (difficulty.trim()) difficulties.add(difficulty.trim());
+      category.split(",").forEach((tag) => this.categories.add(tag.trim()));
+      if (difficulty.trim()) this.difficulties.add(difficulty.trim());
     });
+  }
 
-    // Inject category datalist
+  injectCategoryDatalist() {
     const datalist = document.createElement("datalist");
     datalist.id = "category-list";
-    categories.forEach((tag) => {
+    this.categories.forEach((tag) => {
       const option = document.createElement("option");
       option.value = tag;
       datalist.appendChild(option);
     });
-    const categoryInput = document.getElementById("category-search");
-    categoryInput.setAttribute("list", "category-list");
+    const input = document.getElementById("category-search");
+    input.setAttribute("list", "category-list");
     document.getElementById("search-filter").appendChild(datalist);
+  }
 
-    // Inject difficulty options
+  injectDifficultyOptions() {
     const select = document.getElementById("difficulty-select");
     select.innerHTML = "";
-    const allOption = document.createElement("option");
-    allOption.value = "All";
-    allOption.textContent = "All Difficulties";
+    const allOption = new Option("All Difficulties", "All");
     select.appendChild(allOption);
-    Array.from(difficulties)
+    Array.from(this.difficulties)
       .sort()
       .forEach((level) => {
-        const option = document.createElement("option");
-        option.value = level;
-        option.textContent = level;
-        select.appendChild(option);
+        select.appendChild(new Option(level, level));
       });
+  }
 
-    // Solution toggle
+  bindSolutionToggles() {
     document.querySelectorAll(".solution-toggle-btn").forEach((btn) => {
-      btn.addEventListener("click", function () {
+      btn.addEventListener("click", () => {
         const card = btn.closest(".challenge-card");
         const solution = card.querySelector(".solution-toggle");
         const icon = btn.querySelector("i");
         const label = btn.querySelector("span");
-
         const isHidden = solution.classList.contains("hidden");
         solution.classList.toggle("hidden", !isHidden);
         solution.classList.toggle("active", isHidden);
@@ -103,37 +114,37 @@ fragmentRegistry.register("challenges", function initChallengesPage() {
         label.textContent = isHidden ? "Hide Solution" : "View Solution";
       });
     });
+  }
 
-    // Mark as complete
+  bindCompletionMarkers() {
     document.querySelectorAll(".mark-complete-btn").forEach((btn) => {
-      const challengeId = btn.dataset.id;
-      const key = `challenge-complete-${challengeId}`;
+      const id = btn.dataset.id;
+      const key = `challenge-complete-${id}`;
       if (localStorage.getItem(key) === "true") {
         btn.classList.add("text-green-600", "dark:text-green-400");
       }
-      btn.addEventListener("click", function () {
+      btn.addEventListener("click", () => {
         localStorage.setItem(key, "true");
         btn.classList.add("text-green-600", "dark:text-green-400");
-        updateOverallProgress();
+        this.updateProgress();
       });
     });
+  }
 
-    // Bookmark toggle
+  bindBookmarkToggles() {
     document.querySelectorAll(".bookmark-btn").forEach((btn) => {
-      const challengeId = btn.dataset.id;
+      const id = btn.dataset.id;
       let bookmarks = JSON.parse(
         localStorage.getItem("bookmarked-challenges") || "[]"
       );
-      if (bookmarks.includes(challengeId)) {
-        btn.classList.add("bookmarked");
-      }
+      if (bookmarks.includes(id)) btn.classList.add("bookmarked");
 
-      btn.addEventListener("click", function () {
-        if (!bookmarks.includes(challengeId)) {
-          bookmarks.push(challengeId);
+      btn.addEventListener("click", () => {
+        if (!bookmarks.includes(id)) {
+          bookmarks.push(id);
           btn.classList.add("bookmarked");
         } else {
-          bookmarks = bookmarks.filter((id) => id !== challengeId);
+          bookmarks = bookmarks.filter((x) => x !== id);
           btn.classList.remove("bookmarked");
         }
         localStorage.setItem(
@@ -142,51 +153,51 @@ fragmentRegistry.register("challenges", function initChallengesPage() {
         );
       });
     });
+  }
 
-    // View bookmarked
-    document
-      .getElementById("view-bookmarked")
-      .addEventListener("click", function () {
-        const bookmarks = JSON.parse(
-          localStorage.getItem("bookmarked-challenges") || "[]"
-        );
-        document.querySelectorAll(".challenge-card").forEach((card) => {
-          card.style.display = bookmarks.includes(card.dataset.id)
-            ? ""
-            : "none";
-        });
+  bindBookmarkView() {
+    document.getElementById("view-bookmarked").addEventListener("click", () => {
+      const bookmarks = JSON.parse(
+        localStorage.getItem("bookmarked-challenges") || "[]"
+      );
+      document.querySelectorAll(".challenge-card").forEach((card) => {
+        card.style.display = bookmarks.includes(card.dataset.id) ? "" : "none";
       });
+    });
+  }
 
-    // Title search
+  bindTitleSearch() {
     document
       .getElementById("title-search")
       .addEventListener("input", function () {
-        const searchValue = this.value.trim().toLowerCase();
+        const value = this.value.trim().toLowerCase();
         document.querySelectorAll(".challenge-card").forEach((card) => {
           const title = card
             .querySelector(".challenge-title")
             .textContent.toLowerCase();
           card.style.display =
-            title.includes(searchValue) || searchValue === "" ? "" : "none";
+            title.includes(value) || value === "" ? "" : "none";
         });
       });
+  }
 
-    // Category search
+  bindCategorySearch() {
     document
       .getElementById("category-search")
       .addEventListener("input", function () {
-        const searchValue = this.value.trim().toLowerCase();
+        const value = this.value.trim().toLowerCase();
         document.querySelectorAll(".challenge-card").forEach((card) => {
           const tags = (card.dataset.category || "").toLowerCase();
           card.style.display =
-            tags.includes(searchValue) || searchValue === "" ? "" : "none";
+            tags.includes(value) || value === "" ? "" : "none";
         });
       });
+  }
 
-    // Clear category search
+  bindClearCategory() {
     document
       .getElementById("clear-category-search")
-      .addEventListener("click", function () {
+      .addEventListener("click", () => {
         const input = document.getElementById("category-search");
         input.value = "";
         input.blur();
@@ -194,8 +205,9 @@ fragmentRegistry.register("challenges", function initChallengesPage() {
           card.style.display = "";
         });
       });
+  }
 
-    // Difficulty filter
+  bindDifficultyFilter() {
     document
       .getElementById("difficulty-select")
       .addEventListener("change", function () {
@@ -206,37 +218,35 @@ fragmentRegistry.register("challenges", function initChallengesPage() {
             selected === "All" || level === selected ? "" : "none";
         });
       });
-
-    updateOverallProgress();
   }
 
-  function updateOverallProgress() {
+  updateProgress() {
     const cards = document.querySelectorAll(".challenge-card");
     let completed = 0;
     cards.forEach((card) => {
-      const challengeId = card.dataset.id;
-      if (
-        localStorage.getItem(`challenge-complete-${challengeId}`) === "true"
-      ) {
-        completed++;
-        card.classList.add("completed");
-      } else {
-        card.classList.remove("completed");
-      }
+      const id = card.dataset.id;
+      const done = localStorage.getItem(`challenge-complete-${id}`) === "true";
+      card.classList.toggle("completed", done);
+      if (done) completed++;
     });
 
     const percent = cards.length
       ? Math.round((completed / cards.length) * 100)
       : 0;
-    const progressBar = document.querySelector(".progress-bar");
-    if (progressBar) progressBar.style.width = `${percent}%`;
+    const bar = document.querySelector(".progress-bar");
+    if (bar) bar.style.width = `${percent}%`;
 
     localStorage.setItem("coding-overall-percent", percent);
 
-    const progressText = document.querySelector(".mt-2 span:first-child");
-    const progressCount = document.querySelector(".mt-2 span:last-child");
-    if (progressText) progressText.textContent = `${percent}% completed`;
-    if (progressCount)
-      progressCount.textContent = `${completed}/${cards.length} challenges solved`;
+    const text = document.querySelector(".mt-2 span:first-child");
+    const count = document.querySelector(".mt-2 span:last-child");
+    if (text) text.textContent = `${percent}% completed`;
+    if (count)
+      count.textContent = `${completed}/${cards.length} challenges solved`;
   }
+}
+
+fragmentRegistry.register("challenges", function initChallengesPage() {
+  const manager = new ChallengeManager();
+  manager.init();
 });
