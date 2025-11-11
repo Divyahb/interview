@@ -80,7 +80,7 @@ class SystemDesignChecklistController {
 }
 
 fragmentRegistry.register("system_design", function initSystemDesignPage() {
-  fetch("../data/design.json")
+  fetch("data/design.json")
     .then((response) => {
       if (!response.ok) throw new Error("Failed to load challenges data");
       return response.json();
