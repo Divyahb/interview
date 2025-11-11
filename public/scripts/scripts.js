@@ -3,6 +3,7 @@ class Router {
     this.routes = routes;
     this.contentEl = document.getElementById("content");
     this.menuEl = document.getElementById("menu");
+    this.activeRouteKey = null;
   }
 
   init() {
@@ -18,9 +19,8 @@ class Router {
       item.addEventListener("click", (e) => {
         e.preventDefault();
         const routeKey = item.getAttribute("data-fragment");
-        if (routeKey) {
+        if (routeKey && routeKey !== this.activeRouteKey) {
           window.location.hash = routeKey;
-          this.loadRoute(routeKey);
         }
       });
     });
@@ -29,7 +29,9 @@ class Router {
   bindHashChange() {
     window.addEventListener("hashchange", () => {
       const routeKey = window.location.hash.replace("#", "");
-      this.loadRoute(routeKey);
+      if (routeKey !== this.activeRouteKey) {
+        this.loadRoute(routeKey);
+      }
     });
   }
 
@@ -47,7 +49,8 @@ class Router {
       .then((html) => {
         this.contentEl.innerHTML = html;
         document.title = route.title;
-        this.loadFragmentScript(route.script, route.key);
+        this.activeRouteKey = routeKey;
+        this.loadFragmentScript(route.script, routeKey);
       })
       .catch((err) => {
         this.loadFallback(`Error loading ${route.template}: ${err.message}`);
@@ -56,19 +59,21 @@ class Router {
 
   loadFragmentScript(scriptName, routeKey) {
     const existing = document.querySelector(
-      `script[data-fragment-script="${scriptName}"]`
+      `script[data-fragment-script="${routeKey}"]`
     );
-    if (existing) existing.remove();
+    if (existing) {
+      const initFn = fragmentRegistry.get(routeKey);
+      if (typeof initFn === "function") initFn();
+      return;
+    }
 
     const script = document.createElement("script");
-    script.src = `./scripts/${scriptName}?t=${Date.now()}`;
+    script.src = `./scripts/${scriptName}`;
     script.type = "module";
-    script.setAttribute("data-fragment-script", scriptName);
+    script.setAttribute("data-fragment-script", routeKey);
     script.onload = () => {
       const initFn = fragmentRegistry.get(routeKey);
-      if (typeof initFn === "function") {
-        initFn();
-      }
+      if (typeof initFn === "function") initFn();
     };
     document.body.appendChild(script);
   }
@@ -84,6 +89,7 @@ class Router {
       </section>
     `;
     document.title = "Error";
+    this.activeRouteKey = null;
   }
 }
 
