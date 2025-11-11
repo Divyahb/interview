@@ -68,9 +68,12 @@ class DashboardController {
     this.sections.forEach((section) => {
       const percent = this.getProgress(`${section}-overall-percent`);
       const bar = document.querySelector(`#${section}-progress`);
+      const barText = document.querySelector(`#${section}-progress-text`);
+      const barStatus = document.querySelector(`#${section}-status`);
       if (bar) {
         bar.style.width = `${percent}%`;
-        bar.textContent = `${percent}%`;
+        barText.textContent = `${percent}%`;
+        barStatus.textContent = percent >= 100 ? "Completed" : "In Progress";
       }
     });
   }
@@ -94,29 +97,23 @@ class DashboardController {
   }
 }
 
-fragmentRegistry.register("dashboard", function initDashboard() {
-  const blocker = document.getElementById("blocker-overlay");
-  const configDialog = document.getElementById("config-dialog");
-  const openBtn = document.getElementById("open-config");
-  const triggerBtn = document.getElementById("trigger-config");
-  const saveBtn = document.getElementById("save-config");
-  const clearBtn = document.getElementById("clear-config");
-
-  const sections = ["aws", "coding", "branding", "german", "systemDesign"];
-
-  function showConfigDialog() {
-    configDialog.classList.remove("hidden");
+class DashboardConfigManager {
+  constructor({ sections, blocker, configDialog, saveBtn }) {
+    this.sections = sections;
+    this.blocker = blocker;
+    this.configDialog = configDialog;
+    this.saveBtn = saveBtn;
   }
 
-  function hideConfigDialog() {
-    configDialog.classList.add("hidden");
+  getTodayDate() {
+    return new Date().toISOString().split("T")[0];
   }
 
-  function renderSectionInputs() {
+  renderSectionInputs(prefill = {}) {
     const container = document.getElementById("config-section-dates");
     container.innerHTML = "";
 
-    sections.forEach((section) => {
+    this.sections.forEach((section) => {
       const wrapper = document.createElement("div");
       wrapper.className = "flex flex-col";
 
@@ -128,6 +125,8 @@ fragmentRegistry.register("dashboard", function initDashboard() {
       input.type = "date";
       input.id = `config-end-${section}`;
       input.className = "w-full p-2 border rounded";
+      input.value = prefill[section] || "";
+      input.addEventListener("input", () => this.validateConfigFields());
 
       wrapper.appendChild(label);
       wrapper.appendChild(input);
@@ -135,15 +134,52 @@ fragmentRegistry.register("dashboard", function initDashboard() {
     });
   }
 
-  function validateAndSaveConfig() {
+  prefillConfigDialog(timeline = {}) {
+    document.getElementById("config-name").value = timeline.name || "";
+    document.getElementById("config-start-date").value =
+      timeline.startDate || this.getTodayDate();
+    document.getElementById("config-target-date").value =
+      timeline.targetDate || this.getTodayDate();
+    this.renderSectionInputs(timeline.deadlines || {});
+    this.validateConfigFields();
+  }
+
+  showConfigDialog() {
+    const stored = localStorage.getItem("TIMELINE");
+    const timeline = stored ? JSON.parse(stored) : {};
+    this.prefillConfigDialog(timeline);
+    this.configDialog.classList.remove("hidden");
+  }
+
+  hideConfigDialog() {
+    this.configDialog.classList.add("hidden");
+  }
+
+  validateConfigFields() {
+    const name = document.getElementById("config-name").value.trim();
+    const start = document.getElementById("config-start-date").value;
+    const target = document.getElementById("config-target-date").value;
+
+    document.getElementById("config-target-date").min = start;
+
+    const allFilled =
+      name &&
+      start &&
+      target &&
+      this.sections.every((section) => {
+        const input = document.getElementById(`config-end-${section}`);
+        return input && input.value;
+      });
+
+    this.saveBtn.disabled = !allFilled;
+    this.saveBtn.classList.toggle("opacity-50", !allFilled);
+    this.saveBtn.classList.toggle("cursor-not-allowed", !allFilled);
+  }
+
+  validateAndSaveConfig() {
     const name = document.getElementById("config-name").value.trim();
     const startDate = document.getElementById("config-start-date").value;
     const targetDate = document.getElementById("config-target-date").value;
-
-    if (!name || !startDate || !targetDate) {
-      alert("Please fill in your name, start date, and target date.");
-      return;
-    }
 
     const start = new Date(startDate);
     const target = new Date(targetDate);
@@ -153,7 +189,7 @@ fragmentRegistry.register("dashboard", function initDashboard() {
     }
 
     const deadlines = {};
-    for (const section of sections) {
+    for (const section of this.sections) {
       const endDate = document.getElementById(`config-end-${section}`).value;
       if (!endDate) {
         alert(`Please enter an end date for ${section}.`);
@@ -167,27 +203,21 @@ fragmentRegistry.register("dashboard", function initDashboard() {
       deadlines[section] = endDate;
     }
 
-    const timeline = {
-      name,
-      startDate,
-      targetDate,
-      deadlines,
-    };
-
+    const timeline = { name, startDate, targetDate, deadlines };
     localStorage.setItem("TIMELINE", JSON.stringify(timeline));
-    hideConfigDialog();
-    blocker.classList.add("hidden");
-    initDashboardController(timeline);
+    this.hideConfigDialog();
+    this.blocker.classList.add("hidden");
+    this.initDashboardController(timeline);
   }
 
-  function clearConfig() {
+  clearConfig() {
     localStorage.removeItem("TIMELINE");
     location.reload();
   }
 
-  function initDashboardController(timeline) {
+  initDashboardController(timeline) {
     const controller = new DashboardController({
-      sections,
+      sections: this.sections,
       timeline,
       name: timeline.name,
       startDate: timeline.startDate,
@@ -196,20 +226,42 @@ fragmentRegistry.register("dashboard", function initDashboard() {
     controller.init();
   }
 
-  // Event bindings
-  openBtn.onclick = showConfigDialog;
-  triggerBtn.onclick = showConfigDialog;
-  saveBtn.onclick = validateAndSaveConfig;
-  clearBtn.onclick = clearConfig;
+  bindEvents() {
+    document.getElementById("open-config").onclick = () =>
+      this.showConfigDialog();
+    document.getElementById("trigger-config").onclick = () =>
+      this.showConfigDialog();
+    this.saveBtn.onclick = () => this.validateAndSaveConfig();
+    document.getElementById("clear-config").onclick = () => this.clearConfig();
 
-  renderSectionInputs();
-
-  const stored = localStorage.getItem("TIMELINE");
-  if (stored) {
-    const timeline = JSON.parse(stored);
-    blocker.classList.add("hidden");
-    initDashboardController(timeline);
-  } else {
-    blocker.classList.remove("hidden");
+    ["config-name", "config-start-date", "config-target-date"].forEach((id) => {
+      document
+        .getElementById(id)
+        .addEventListener("input", () => this.validateConfigFields());
+    });
   }
+
+  init() {
+    const stored = localStorage.getItem("TIMELINE");
+    if (stored) {
+      const timeline = JSON.parse(stored);
+      this.blocker.classList.add("hidden");
+      this.prefillConfigDialog(timeline);
+      this.initDashboardController(timeline);
+    } else {
+      this.blocker.classList.remove("hidden");
+      this.prefillConfigDialog(); // default values
+    }
+    this.bindEvents();
+  }
+}
+
+fragmentRegistry.register("dashboard", function initDashboard() {
+  const manager = new DashboardConfigManager({
+    sections: ["aws", "coding", "branding", "german", "system-design"],
+    blocker: document.getElementById("blocker-overlay"),
+    configDialog: document.getElementById("config-dialog"),
+    saveBtn: document.getElementById("save-config"),
+  });
+  manager.init();
 });
