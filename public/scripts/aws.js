@@ -103,7 +103,7 @@ fragmentRegistry.register("aws", function initAwsChecklist() {
         containerId: "checklist",
         progressBarId: "progress-bar",
         progressTextId: "progress-text",
-        storagePrefix: "aws-task",
+        storagePrefix: "aws",
       });
       controller.init(checklistData);
     })
