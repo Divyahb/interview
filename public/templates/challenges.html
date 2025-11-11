@@ -1,25 +1,18 @@
-<div class="container mx-auto px-6 py-8">
-  <header class="mb-8 space-y-4">
-    <h1 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white">
-      Senior Developer Coding Challenges
+<div class="container mx-auto px-12 py-8">
+  <header class="mb-8">
+    <h1 class="text-3xl font-bold text-blue-700">
+      <i class="fas fa-laptop-code text-indigo-600 mr-3"></i>Coding Challenges
     </h1>
-    <p class="text-lg text-gray-600 dark:text-gray-300">
-      Top problems asked by Tech companies
-    </p>
 
     <!-- Progress bar -->
-    <div class="mt-4 bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-      <div
-        class="progress-bar bg-blue-600 dark:bg-blue-500 rounded-full h-2.5"
-        style="width: 0%"
-      ></div>
+    <div class="progress-bar-bg mt-4">
+      <div id="coding-progress-bar" class="progress-bar" style="width: 0%"></div>
     </div>
-    <div
-      class="mt-2 text-sm text-gray-600 dark:text-gray-400 flex justify-between"
-    >
-      <span></span>
-      <span></span>
+    <div class="mt-2 flex justify-between items-center text-sm text-gray-600 dark:text-gray-400">
+      <span id="coding-progress-text">0% completed</span>
+      <span id="coding-progress-count">0/0 challenges completed</span>
     </div>
+  </header>
 
     <!-- Bookmarked toggle -->
     <button
