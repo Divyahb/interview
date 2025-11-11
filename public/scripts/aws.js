@@ -93,7 +93,7 @@ class AwsChecklistController {
 }
 
 fragmentRegistry.register("aws", function initAwsChecklist() {
-  fetch("./data/aws.json")
+  fetch("data/aws.json")
     .then((response) => {
       if (!response.ok) throw new Error("Failed to load checklist data");
       return response.json();

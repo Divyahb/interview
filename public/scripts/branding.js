@@ -96,7 +96,7 @@ class BrandingChecklistController {
 }
 
 fragmentRegistry.register("branding", function initBrandingPage() {
-  fetch("../data/branding.json")
+  fetch("data/branding.json")
     .then((response) => {
       if (!response.ok) throw new Error("Failed to load checklist data");
       return response.json();
