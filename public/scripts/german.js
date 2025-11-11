@@ -79,7 +79,7 @@ class GermanChecklistController {
 }
 
 fragmentRegistry.register("german", function initGermanPage() {
-  fetch("/data/german.json")
+  fetch("data/german.json")
     .then((response) => {
       if (!response.ok) throw new Error("Failed to load checklist data");
       return response.json();
